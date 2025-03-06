@@ -16,8 +16,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  🔍️detekt:
+  detekt:
     uses: ./.github/workflows/detekt.yml
 
-  🚨lint:
+  lint:
     uses: ./.github/workflows/lint.yml
