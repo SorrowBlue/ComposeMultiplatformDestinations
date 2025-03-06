@@ -1,7 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -9,16 +7,19 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+
+    jvmToolchain {
+        vendor = JvmVendorSpec.ADOPTIUM
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
     }
-    
+
+    androidTarget()
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -68,6 +69,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(projects.cmpDestinations)
+            implementation(libs.kotlinx.serialization.core)
+            implementation(libs.androidx.navigation.composeMultiplatform)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -78,12 +83,9 @@ kotlin {
 
 android {
     namespace = "com.sorrowblue.cmpdestinations"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.sorrowblue.cmpdestinations"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
     }
@@ -97,14 +99,15 @@ android {
             isMinifyEnabled = false
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 }
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    add("kspAndroid", projects.cmpDestinationsKsp)
+    add("kspIosX64", projects.cmpDestinationsKsp)
+    add("kspIosArm64", projects.cmpDestinationsKsp)
+    add("kspIosSimulatorArm64", projects.cmpDestinationsKsp)
+    add("kspDesktop", projects.cmpDestinationsKsp)
 }
 
 compose.desktop {
