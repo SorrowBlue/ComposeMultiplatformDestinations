@@ -67,6 +67,23 @@ kotlin {
 
 android {
     namespace = "com.sorrowblue.cmpdestinations"
+
+
+    lint {
+        val isCI = System.getenv("CI").toBoolean()
+        checkAllWarnings = true
+        checkDependencies = true
+        disable += listOf("InvalidPackage", "NewerVersionAvailable", "GradleDependency")
+        baseline = project.file("lint-baseline.xml")
+        htmlReport = !isCI
+        htmlOutput =
+            if (htmlReport) project.file("${project.rootDir}/build/reports/lint/lint-result.html") else null
+        sarifReport = isCI
+        sarifOutput =
+            if (sarifReport) project.file("${project.rootDir}/build/reports/lint/lint-result.sarif") else null
+        textReport = false
+        xmlReport = false
+    }
 }
 
 
