@@ -83,7 +83,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sorrowblue.cmpdestinations"
+    namespace = "com.sorrowblue.cmpdestinations.app"
 
     defaultConfig {
         applicationId = "com.sorrowblue.cmpdestinations"
