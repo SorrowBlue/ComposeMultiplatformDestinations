@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.cmpdestinations.detekt)
 }
 
 kotlin {
@@ -82,7 +83,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sorrowblue.cmpdestinations"
+    namespace = "com.sorrowblue.cmpdestinations.app"
 
     defaultConfig {
         applicationId = "com.sorrowblue.cmpdestinations"

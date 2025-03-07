@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.detekt)
-    id("io.github.pemistahl.version-catalog-linter") version "1.0.3"
+    alias(libs.plugins.versionCatalogLinter)
+    alias(libs.plugins.cmpdestinations.publish) apply false
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.composeMultiplatform) apply false

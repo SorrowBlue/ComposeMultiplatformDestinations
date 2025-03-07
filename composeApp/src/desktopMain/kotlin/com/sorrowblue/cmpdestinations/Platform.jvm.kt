@@ -1,7 +1,5 @@
 package com.sorrowblue.cmpdestinations
 
-class JVMPlatform: Platform {
+actual fun getPlatform(): Platform = object : Platform {
     override val name: String = "Java ${System.getProperty("java.version")}"
 }
-
-actual fun getPlatform(): Platform = JVMPlatform()
