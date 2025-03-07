@@ -39,10 +39,10 @@ internal class PublishConversionPlugin : Plugin<Project> {
             val git = Git(repository)
             val tagsduty = git.describe().setTags(true).setAbbrev(1).call()
             val tags = git.describe().setTags(true).setAbbrev(0).call()
-            if (tags == tagsduty) {
-                target.version = tags
-            } else {
-                target.version = "$tags-SNAPSHOT"
+            target.version = when {
+                tags.isNullOrEmpty() -> "0.0.0-SNAPSHOT"
+                tags == tagsduty -> target.version = tags
+                else -> target.version = "$tags-SNAPSHOT"
             }
 
             val extension =
@@ -55,7 +55,7 @@ internal class PublishConversionPlugin : Plugin<Project> {
             }
 
             extensions.configure<MavenPublishBaseExtension> {
-                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
 
                 afterEvaluate {
                     coordinates(

@@ -1,0 +1,32 @@
+name: Publish central.sonatype.com snapshot
+
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - main
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  pull-requests: write
+  # required for all workflows
+  security-events: write
+
+jobs:
+  detekt_lint:
+    uses: ./.github/workflows/detekt-lint.yml
+
+  publish:
+    runs-on: macos-latest
+    needs: detekt_lint
+    environment: main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-java-gradle
+
+      - name: 🚀 Run publish
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: ${{ github.event_name == 'push' }}
