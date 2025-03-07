@@ -1,6 +1,3 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.report.ReportMergeTask
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.cmpdestinations.detekt)
@@ -22,6 +19,11 @@ kotlin {
 
     compilerOptions {
         allWarningsAsErrors.set(true)
+    }
+
+    jvmToolchain {
+        vendor = JvmVendorSpec.ADOPTIUM
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
     }
 }
 
