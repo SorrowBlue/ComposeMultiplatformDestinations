@@ -60,7 +60,7 @@ internal fun resolveDestination(
         }
         // @Destination(style = "XXX") を取得
         val style =
-            (destination.arguments.first { it.name?.asString() == "style" }.value as? KSType)?.toClassName()
+            (destination.arguments.firstOrNull { it.name?.asString() == "style" }?.value as? KSType)?.toClassName()
                 ?: DestinationStyle_Composable
 
         val argumentsNoDefault: List<Pair<String, KSTypeReference>> =

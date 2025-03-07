@@ -16,5 +16,5 @@ fun Sequence<KSAnnotation>.get(className: ClassName): KSAnnotation {
 
 fun <T> KSAnnotation.getArgument(name: String): T? {
     @Suppress("UNCHECKED_CAST")
-    return arguments.first { it.name?.asString() == name }.value as? T
+    return arguments.firstOrNull { it.name?.asString() == name }?.value as? T
 }
