@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "prHourlyLimit": 4,
+  "labels": [
+    ":dependabot: dependencies",
+    "renovate"
+  ],
+  "dependencyDashboardLabels": [
+    "renovate"
+  ],
+  "packageRules": [
+    {
+      "groupName": "Kotlin monorepo",
+      "matchPackageNames": [
+        "org.jetbrains.kotlin**",
+        "com.google.devtools.ksp**"
+      ]
+    },
+    {
+      "groupName": "Kotlin serialization monorepo",
+      "matchPackageNames": [
+        "org.jetbrains.kotlinx:kotlinx-serialization**"
+      ]
+    },
+    {
+      "groupName": "Android Gradle plugin monorepo",
+      "matchPackageNames": [
+        "com.android.**"
+      ]
+    },
+    {
+      "groupName": "androidx.lifecycle monorepo",
+      "matchPackageNames": [
+        "org.jetbrains.androidx.lifecycle**"
+      ]
+    }
+  ]
+}
