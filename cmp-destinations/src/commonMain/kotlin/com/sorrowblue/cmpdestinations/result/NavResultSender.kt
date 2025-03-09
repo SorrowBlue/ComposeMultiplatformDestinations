@@ -49,7 +49,7 @@ private class NavResultSenderImpl<R : Any>(
     override fun setResult(result: R) {
         navController.previousBackStackEntry?.savedStateHandle?.let {
             it[canceledKey] = false
-            it[resultKey] = serializerType.toByteArray(result)
+            it[resultKey] = serializerType.toJsonString(result)
         }
     }
 

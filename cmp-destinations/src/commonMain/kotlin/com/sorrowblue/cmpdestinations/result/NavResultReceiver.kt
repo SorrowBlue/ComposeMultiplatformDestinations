@@ -71,8 +71,8 @@ private class NavResultReceiverImpl<N : Any, R : Any>(
         if (canceled == true) {
             listener(NavResult.Canceled)
         } else if (backStackEntry.savedStateHandle.contains(resultKey)) {
-            val result = backStackEntry.savedStateHandle.get<ByteArray>(resultKey)?.let {
-                kSerializerByteArray.fromByteArray(it)
+            val result = backStackEntry.savedStateHandle.get<String>(resultKey)?.let {
+                kSerializerByteArray.fromJsonString(it)
             }!!
             backStackEntry.savedStateHandle.remove<Any?>(resultKey)
             listener(NavResult.Value(result))

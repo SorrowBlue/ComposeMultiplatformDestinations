@@ -62,6 +62,9 @@ autolabeler:
   - label: enhancement
     branch:
       - '/(enhancement|improve)[/-].+/'
+  - label: dependencies
+    branch:
+      - '/(dependencies)[/-].+/'
 
   - label: gradle
     files:

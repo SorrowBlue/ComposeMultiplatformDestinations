@@ -1,16 +1,13 @@
 package com.sorrowblue.cmpdestinations.serializer
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
-@OptIn(ExperimentalSerializationApi::class)
 inline fun <reified T> kSerializerHelper() =
-    KSerializerHelper(Cbor.serializersModule.serializer<T>())
+    KSerializerHelper(Json.serializersModule.serializer<T>())
 
-@OptIn(ExperimentalSerializationApi::class)
 class KSerializerHelper<T>(private val serializer: KSerializer<T>) {
-    fun toByteArray(value: T): ByteArray = Cbor.encodeToByteArray(serializer, value)
-    fun fromByteArray(bytes: ByteArray): T = Cbor.decodeFromByteArray(serializer, bytes)
+    fun toJsonString(value: T): String = Json.encodeToString(serializer, value)
+    fun fromJsonString(json: String): T = Json.decodeFromString(serializer, json)
 }

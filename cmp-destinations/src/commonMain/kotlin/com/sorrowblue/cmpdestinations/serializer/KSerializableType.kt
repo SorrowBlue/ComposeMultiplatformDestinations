@@ -1,44 +1,43 @@
 package com.sorrowblue.cmpdestinations.serializer
 
-import androidx.core.bundle.Bundle
 import androidx.navigation.NavType
-import kotlinx.serialization.ExperimentalSerializationApi
+import androidx.savedstate.SavedState
+import androidx.savedstate.read
+import androidx.savedstate.write
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.cbor.Cbor
-import kotlinx.serialization.decodeFromHexString
-import kotlinx.serialization.encodeToHexString
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
-@OptIn(ExperimentalSerializationApi::class)
 inline fun <reified D : @Serializable Any> NavType.Companion.kSerializableType(
     isNullableAllowed: Boolean = false,
 ): KSerializableType<D> {
-    return KSerializableType(Cbor.serializersModule.serializer<D>(), isNullableAllowed)
+    return KSerializableType(Json.serializersModule.serializer<D>(), isNullableAllowed)
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 class KSerializableType<D : @Serializable Any?>(
     private val serializer: KSerializer<D>,
     isNullableAllowed: Boolean = false,
 ) : NavType<D>(isNullableAllowed) {
     override val name get() = serializer.descriptor.serialName
 
-    override fun get(bundle: Bundle, key: String): D? {
-        return bundle.getByteArray(key)?.let {
-            Cbor.decodeFromByteArray(serializer, it)
+    override fun get(bundle: SavedState, key: String): D? {
+        return bundle.read { getString(key) }.let {
+            Json.decodeFromString(serializer, it)
         }
     }
 
-    override fun put(bundle: Bundle, key: String, value: D) {
-        bundle.putByteArray(key, Cbor.encodeToByteArray(serializer, value))
+    override fun put(bundle: SavedState, key: String, value: D) {
+        bundle.write {
+            putString(key, Json.encodeToString(serializer, value))
+        }
     }
 
     override fun serializeAsValue(value: D): String {
-        return Cbor.encodeToHexString(serializer, value)
+        return Json.encodeToString(serializer, value)
     }
 
     override fun parseValue(value: String): D {
-        return Cbor.decodeFromHexString(serializer, value)
+        return Json.decodeFromString(serializer, value)
     }
 }
