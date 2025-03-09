@@ -18,7 +18,9 @@ categories:
   - title: '📖 Documentation'
     label: 'documentation'
   - title: '⛓️ Dependency update'
-    label: 'dependencies'
+    labels:
+      - 'dependencies'
+      - ':dependabot: dependencies'
 
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 
@@ -64,7 +66,7 @@ autolabeler:
       - '/(enhancement|improve)[/-].+/'
   - label: dependencies
     branch:
-      - '/(dependencies)[/-].+/'
+      - '/dependencies[/-].+/'
 
   - label: gradle
     files:
