@@ -1,21 +1,23 @@
 [versions]
 agp = "8.9.0"
 androidx-activityCompose = "1.10.1"
+androidx-coreBundle = "1.1.0-alpha03"
 androidx-lifecycle = "2.8.4"
-androidx-navigation-compose-multiplatform = "2.8.0-alpha13"
+androidx-navigation-compose-multiplatform = "2.9.0-alpha14"
 compose-multiplatform = "1.8.0-alpha04"
 detekt = "1.23.8"
 java = "21"
-kotlin = "2.1.10"
+kotlin = "2.1.20-RC2"
 kotlinpoet-ksp = "2.1.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-io = "0.7.0"
 kotlinx-serialization = "1.8.0"
-ksp = "2.1.10-1.0.31"
+ksp = "2.1.20-RC2-1.0.31"
 maven-publish = "0.31.0"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activityCompose" }
+androidx-coreBundle = { group = "org.jetbrains.androidx.core", name = "core-bundle", version.ref = "androidx-coreBundle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-navigation-composeMultiplatform = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation-compose-multiplatform" }
@@ -25,8 +27,8 @@ detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-pl
 jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version = "7.1.0.202411261347-r" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-io = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
-kotlinx-serialization-cbor = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-cbor", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ksp-symbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 mavenPublishPlugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "maven-publish" }
 squareup-kotlinpoetKsp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet-ksp" }
@@ -45,3 +47,4 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 versionCatalogLinter = { id = "io.github.pemistahl.version-catalog-linter", version = "1.0.3" }
+versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
