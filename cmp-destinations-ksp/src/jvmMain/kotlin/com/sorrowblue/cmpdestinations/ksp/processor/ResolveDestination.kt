@@ -9,6 +9,7 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeReference
 import com.google.devtools.ksp.symbol.KSValueParameter
+import com.google.devtools.ksp.symbol.Modifier
 import com.google.devtools.ksp.validate
 import com.sorrowblue.cmpdestinations.ksp.get
 import com.sorrowblue.cmpdestinations.ksp.isObjectClass
@@ -18,6 +19,7 @@ import com.sorrowblue.cmpdestinations.ksp.util.ScreenDestination
 import com.sorrowblue.cmpdestinations.ksp.util.Serializable
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
@@ -34,7 +36,7 @@ internal fun resolveDestination(
     val (processable, next) = symbols.partition { it.validate() }
     val resolveTypeMap = mutableListOf<String>()
     processable.forEach { ksFunction ->
-        logger.info("@Destination<${ksFunction.qualifiedName?.asString()}>", ksFunction)
+        logger.info("@Destination<???> fun ${ksFunction.qualifiedName?.asString()}", ksFunction)
 
         val composableFunction =
             MemberName(ksFunction.packageName.asString(), ksFunction.simpleName.asString())
@@ -68,6 +70,11 @@ internal fun resolveDestination(
                 it.name!!.asString() to it.type
             }
         val clazz = TypeSpec.classBuilder(name)
+            .apply {
+                if (routeType.declaration.modifiers.any { it == Modifier.INTERNAL }) {
+                    addModifiers(KModifier.INTERNAL)
+                }
+            }
             .addSuperinterface(ScreenDestination)
             .addProperty(routeProperty(routeType))
             .addProperty(styleProperty(style))
