@@ -24,7 +24,7 @@ androidx-navigation-composeMultiplatform = { group = "org.jetbrains.androidx.nav
 arturbosch-detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", version = "0.4.22" }
 detektPlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
-jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version = "7.1.0.202411261347-r" }
+jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version = "7.2.0.202503040940-r" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-io = { group = "org.jetbrains.kotlinx", name = "kotlinx-io-core", version.ref = "kotlinx-io" }
 kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
