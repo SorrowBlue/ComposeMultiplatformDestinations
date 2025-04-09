@@ -4,11 +4,13 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.Modifier
 import com.sorrowblue.cmpdestinations.ksp.isEnumClass
 import com.sorrowblue.cmpdestinations.ksp.util.NavType
 import com.sorrowblue.cmpdestinations.ksp.util.Serializable
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.STAR
@@ -30,6 +32,11 @@ fun resolveTypeMap(
     val className = routeType.simpleName.asString()
     val packageName = routeType.packageName.asString()
     val func = FunSpec.builder("typeMap")
+        .apply {
+            if (routeType.modifiers.any { it == Modifier.INTERNAL }) {
+                addModifiers(KModifier.INTERNAL)
+            }
+        }
         .receiver(routeType.toClassName().nestedClass("Companion"))
         .returns(
             Map::class.asClassName()

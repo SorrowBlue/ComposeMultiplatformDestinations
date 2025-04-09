@@ -94,7 +94,7 @@ internal fun contentFunction(
                     }
 
                     routeType.canonicalName -> {
-                        add("${it.first} = %M(),", toRoute)
+                        add("${it.first} = %M<%T>(),", toRoute, routeType)
                     }
 
                     else -> throw NotSupportException("not support type=$typeQualifiedName")
