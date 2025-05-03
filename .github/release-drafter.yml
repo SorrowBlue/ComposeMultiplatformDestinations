@@ -67,7 +67,6 @@ autolabeler:
   - label: dependencies
     branch:
       - '/dependencies[/-].+/'
-
   - label: gradle
     files:
       - 'gradle/**/*'
