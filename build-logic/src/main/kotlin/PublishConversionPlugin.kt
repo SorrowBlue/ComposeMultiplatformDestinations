@@ -2,7 +2,6 @@ import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.RepositoryBuilder
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -10,7 +9,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.the
 
 interface PublishConversionPluginExtension {
     val group: Property<String>
@@ -91,7 +89,7 @@ internal class PublishConversionPlugin : Plugin<Project> {
                     }
                     scm {
                         url.set("https://github.com/SorrowBlue/ComposeMultiplatformDestinations")
-                        connection.set("scm:git:git://github.com/SorrowBlue/ComposeMultiplatformDestinations.git")
+                        connection.set("scm:git:https://github.com/SorrowBlue/ComposeMultiplatformDestinations.git")
                         developerConnection.set(
                             "scm:git:ssh://git@github.com/SorrowBlue/ComposeMultiplatformDestinations.git"
                         )
