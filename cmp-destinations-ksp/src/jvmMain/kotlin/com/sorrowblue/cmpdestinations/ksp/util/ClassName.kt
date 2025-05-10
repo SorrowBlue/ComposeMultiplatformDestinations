@@ -106,3 +106,15 @@ internal val toRoute = MemberName("androidx.navigation", "toRoute")
  */
 internal val DestinationStyle_Composable =
     ClassName("com.sorrowblue.cmpdestinations", "DestinationStyle", "Composable")
+
+/**
+ * @see [androidx.navigation.NavDeepLink]
+ */
+internal val AndroidxNavDeepLink =
+    ClassName("androidx.navigation", "NavDeepLink")
+
+/**
+ * @see [androidx.navigation.navDeepLink]
+ */
+internal val navDeepLink =
+    ClassName("androidx.navigation", "navDeepLink")

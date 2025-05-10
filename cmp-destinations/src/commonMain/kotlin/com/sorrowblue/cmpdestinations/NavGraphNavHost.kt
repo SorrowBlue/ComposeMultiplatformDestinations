@@ -6,6 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
@@ -131,6 +132,9 @@ private fun NavGraphBuilder.addComposable(
                 it.Content(navController = navController)
             }
         }.apply {
+            screenDestination.deeplinks.forEach {
+                deepLink(it)
+            }
             this.enterTransition = { with(navTransitions) { enterTransition() } }
             this.exitTransition = { with(navTransitions) { exitTransition() } }
             this.popEnterTransition = { with(navTransitions) { popEnterTransition() } }
