@@ -31,9 +31,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm("desktop")
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName = "composeApp"
@@ -53,31 +53,35 @@ kotlin {
         }
         binaries.executable()
     }
-    
-    sourceSets {
-        val desktopMain by getting
-        
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-        }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(projects.cmpDestinations)
-            implementation(libs.kotlinx.serialization.core)
-            implementation(libs.androidx.navigation.composeMultiplatform)
+    sourceSets {
+        androidMain {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
+            }
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutines.swing)
+        commonMain {
+            dependencies {
+                implementation(projects.cmpDestinations)
+
+                implementation(compose.foundation)
+                implementation(compose.runtime)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.androidx.navigation.composeMultiplatform)
+                implementation(libs.kotlinx.serialization.core)
+            }
+        }
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.swing)
+            }
         }
     }
 }
@@ -96,7 +100,7 @@ android {
         }
     }
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
         }
     }
