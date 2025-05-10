@@ -35,9 +35,14 @@ internal class PublishConversionPlugin : Plugin<Project> {
             }
 
             val gitTagProvider: Provider<String> = providers.of(GitTagValueSource::class) {}
-            val tag = checkNotNull(gitTagProvider.orNull) { "No git tag found." }
-            val version = checkNotNull(releaseVersionOrSnapshot(tag.removePrefix("v"))) { "git tag is not valid." }
-            target.version = version
+            runCatching {
+                val tag = checkNotNull(gitTagProvider.orNull) { "No git tag found." }
+                val version = checkNotNull(releaseVersionOrSnapshot(tag.removePrefix("v"))) { "git tag is not valid." }
+                target.version = version
+            }.onFailure {
+                logger.warn("Failed to get git tag. Using version 'UNKNOWN'.")
+                target.version = "UNKNOWN"
+            }
 
             val extension =
                 project.extensions.create<PublishConversionPluginExtension>("cmpDestinationsPublishing")
