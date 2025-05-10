@@ -73,7 +73,6 @@ internal fun resolveDestination(
             ?: DestinationStyle_Composable
         logger.info("  style: ${style.simpleName}", ksFunction)
 
-
         val deeplinks =
             (destination.arguments.get("deeplinks") as? ArrayList<*>)
                 ?.filterIsInstance<KSAnnotation>()
@@ -123,4 +122,3 @@ internal fun resolveDestination(
 private fun List<KSValueArgument>.get(name: String): Any? {
     return firstOrNull { it.name?.asString() == name }?.value
 }
-

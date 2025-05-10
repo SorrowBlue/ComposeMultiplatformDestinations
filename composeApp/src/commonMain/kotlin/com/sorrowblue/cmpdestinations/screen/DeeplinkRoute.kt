@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavBackStackEntry
+import com.sorrowblue.cmpdestinations.IntentContents
 import com.sorrowblue.cmpdestinations.annotation.DeepLink
 import com.sorrowblue.cmpdestinations.annotation.Destination
-import com.sorrowblue.cmpdestinations.IntentContents
 import kotlinx.serialization.Serializable
 
 @Serializable
