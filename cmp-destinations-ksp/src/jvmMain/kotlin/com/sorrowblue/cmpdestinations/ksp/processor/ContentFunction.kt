@@ -29,7 +29,6 @@ import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.ksp.toClassName
-import kotlin.concurrent.thread
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -65,27 +64,31 @@ internal fun deeplinksProperty(deeplinks: List<NavDeepLink>) =
             if (deeplinks.isEmpty()) {
                 initializer("emptyList()")
             } else {
-                initializer(CodeBlock.builder().apply {
-                    addStatement("listOf(⇥")
-                    deeplinks.forEachIndexed { index, it ->
-                        this.add(CodeBlock.builder()
-                            .apply {
-                                addStatement("%T {⇥", navDeepLink)
-                                if (!it.uriPattern.isNullOrBlank()) {
-                                    addStatement("uriPattern = %S", it.uriPattern)
-                                }
-                                if (!it.action.isNullOrBlank()) {
-                                    addStatement("action = %S", it.action)
-                                }
-                                if (!it.mimeType.isNullOrBlank()) {
-                                    addStatement("mimeType = %S", it.mimeType)
-                                }
-                                addStatement("⇤},")
-                            }
-                            .build())
-                    }
-                    addStatement("⇤)")
-                }.build())
+                initializer(
+                    CodeBlock.builder().apply {
+                        addStatement("listOf(⇥")
+                        deeplinks.forEach {
+                            add(
+                                CodeBlock.builder()
+                                    .apply {
+                                        addStatement("%T {⇥", navDeepLink)
+                                        if (!it.uriPattern.isNullOrBlank()) {
+                                            addStatement("uriPattern = %S", it.uriPattern)
+                                        }
+                                        if (!it.action.isNullOrBlank()) {
+                                            addStatement("action = %S", it.action)
+                                        }
+                                        if (!it.mimeType.isNullOrBlank()) {
+                                            addStatement("mimeType = %S", it.mimeType)
+                                        }
+                                        addStatement("⇤},")
+                                    }
+                                    .build()
+                            )
+                        }
+                        addStatement("⇤)")
+                    }.build()
+                )
             }
         }
         .build()
@@ -140,8 +143,6 @@ internal fun contentFunction(
                     NavBackStackEntry.canonicalName -> {
                         add("%L = this,", it.first)
                     }
-
-
 
                     NavResultReceiver.canonicalName -> {
                         add("%L=%M(),", it.first, navResultReceiver)

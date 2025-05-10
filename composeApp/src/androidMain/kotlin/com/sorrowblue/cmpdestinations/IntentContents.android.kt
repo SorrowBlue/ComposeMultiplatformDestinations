@@ -3,6 +3,7 @@ package com.sorrowblue.cmpdestinations
 import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 
+@Suppress("ModifierMissing")
 @Composable
 actual fun IntentContents(navBackStackEntry: NavBackStackEntry) {
     val context = LocalContext.current
@@ -49,16 +51,17 @@ actual fun IntentContents(navBackStackEntry: NavBackStackEntry) {
         }
     }
 
-    if (bitmap != null) {
-        Image(
-            bitmap = bitmap!!,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.size(200.dp)
-        )
-    }
-
-    if (text != null) {
-        Text(text = text!!)
+    Box {
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap!!,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.size(200.dp)
+            )
+        }
+        if (text != null) {
+            Text(text = text!!)
+        }
     }
 }
