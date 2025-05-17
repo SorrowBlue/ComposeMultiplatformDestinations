@@ -40,11 +40,11 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(compose.runtime)
-                implementation(libs.androidx.navigation.composeMultiplatform)
-                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.androidx.navigationCompose.multiplatform)
+                implementation(libs.kotlinx.serializationJson)
                 implementation(libs.kotlinx.io)
                 implementation(libs.androidx.coreBundle)
-                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.androidx.lifecycleRuntimeCompose)
             }
         }
     }

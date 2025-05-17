@@ -5,11 +5,11 @@ import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-interface NavGraph {
+interface GraphNavigation {
     val startDestination: KClass<*>
     val route: KClass<*>
     val typeMap: Map<KType, NavType<*>>
-    val screenDestinations: List<ScreenDestination>
-    val nestedNavGraphs: List<NavGraph>
+    val destinations: Array<ScreenDestination>
+    val nestedGraphs: Array<GraphNavigation>
     val transitions: NavTransitions
 }

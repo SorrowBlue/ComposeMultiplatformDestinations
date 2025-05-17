@@ -1,4 +1,4 @@
-package com.sorrowblue.cmpdestinations.ksp.util
+package com.sorrowblue.cmpdestinations.ksp.model
 
 class NavDeepLink(
     val uriPattern: String? = null,

@@ -21,11 +21,10 @@ tasks {
 
 dependencies {
     compileOnly(files(currentLibs.javaClass.superclass.protectionDomain.codeSource.location))
-    implementation(libs.detektPlugin)
-    implementation(libs.jgit)
-    implementation(libs.mavenPublishPlugin)
-    detektPlugins(libs.compose.rules.detekt)
-    detektPlugins(libs.arturbosch.detektFormatting)
+    implementation(libs.detekt.plugin)
+    implementation(libs.mavenPublish.plugin)
+    detektPlugins(libs.detekt.compose)
+    detektPlugins(libs.detekt.formatting)
 }
 
 gradlePlugin {

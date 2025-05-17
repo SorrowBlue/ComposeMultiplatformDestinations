@@ -11,6 +11,16 @@ kotlin {
             dependencies {
                 implementation(libs.ksp.symbolProcessingApi)
                 implementation(libs.squareup.kotlinpoetKsp)
+                implementation(libs.kotlinx.serialization)
+
+                implementation(projects.cmpDestinations) {
+                    exclude(group = "org.jetbrains.skiko")
+                }
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(libs.androidx.navigationCompose)
             }
         }
     }

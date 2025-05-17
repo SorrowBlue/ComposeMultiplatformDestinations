@@ -23,8 +23,8 @@ internal class DetektConversionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("detektPlugins", libs.compose.rules.detekt)
-                add("detektPlugins", libs.arturbosch.detektFormatting)
+                add("detektPlugins", libs.detekt.compose)
+                add("detektPlugins", libs.detekt.formatting)
             }
 
             val reportMerge = rootProject.tasks.withType(ReportMergeTask::class)

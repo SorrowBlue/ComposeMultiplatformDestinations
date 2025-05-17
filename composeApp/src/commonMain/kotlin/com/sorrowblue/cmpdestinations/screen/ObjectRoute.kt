@@ -19,13 +19,14 @@ import androidx.navigation.NavController
 import com.sorrowblue.cmpdestinations.annotation.Destination
 import com.sorrowblue.cmpdestinations.result.NavResult
 import com.sorrowblue.cmpdestinations.result.NavResultReceiver
+import com.sorrowblue.cmpdestinations.wrapper.WelcomeWrapper
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal data object ObjectRoute
 
-@Destination<ObjectRoute>
+@Destination<ObjectRoute>(wrappers = [WelcomeWrapper::class])
 @Composable
 internal fun ObjectRouteScreen(
     navController: NavController,
@@ -58,6 +59,16 @@ internal fun ObjectRouteScreen(
                 navController.navigate(AllSupportType())
             }) {
                 Text("AllSupportType")
+            }
+            Button(onClick = {
+                navController.navigate(NestedGraph(string = "NestedGraph2"))
+            }) {
+                Text("NestedGraph2")
+            }
+            Button(onClick = {
+                navController.navigate(Foo(string = "Foo"))
+            }) {
+                Text("Foo")
             }
         }
     }

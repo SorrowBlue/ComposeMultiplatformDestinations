@@ -58,7 +58,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(compose.preview)
-                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.activityCompose)
             }
         }
         commonMain {
@@ -71,16 +71,16 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.androidx.navigation.composeMultiplatform)
-                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.androidx.lifecycleViewmodel)
+                implementation(libs.androidx.lifecycleRuntimeCompose)
+                implementation(libs.androidx.navigationCompose.multiplatform)
+                implementation(libs.kotlinx.serialization)
             }
         }
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(libs.kotlinx.coroutines.swing)
+                implementation(libs.kotlinx.coroutinesSwing)
             }
         }
     }

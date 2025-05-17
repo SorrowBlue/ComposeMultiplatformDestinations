@@ -12,7 +12,8 @@ interface ScreenDestination {
     val route: KClass<*>
     val typeMap: Map<KType, NavType<*>>
     val style: DestinationStyle
-    val deeplinks: List<NavDeepLink>
+    val deepLinks: Array<NavDeepLink>
+    val wrappers: Array<out DestinationWrapper>
 
     @Composable
     fun NavBackStackEntry.Content(navController: NavController)

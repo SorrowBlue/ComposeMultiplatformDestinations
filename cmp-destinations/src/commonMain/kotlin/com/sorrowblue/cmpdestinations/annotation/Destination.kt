@@ -1,6 +1,7 @@
 package com.sorrowblue.cmpdestinations.annotation
 
 import com.sorrowblue.cmpdestinations.DestinationStyle
+import com.sorrowblue.cmpdestinations.DestinationWrapper
 import kotlin.reflect.KClass
 
 /**
@@ -24,5 +25,7 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.SOURCE)
 annotation class Destination<T : Any>(
     val style: KClass<out DestinationStyle> = DestinationStyle.Composable::class,
+    val graph: KClass<*> = Nothing::class,
     val deeplinks: Array<DeepLink> = [],
+    val wrappers: Array<KClass<out DestinationWrapper>> = [],
 )

@@ -19,30 +19,30 @@ import kotlin.reflect.KClass
 
 @Composable
 fun NavGraphNavHost(
-    navGraph: NavGraph,
+    graphNavigation: GraphNavigation,
     navController: NavHostController,
     modifier: Modifier = Modifier,
     startDestination: KClass<*>? = null,
     isCompact: Boolean = false,
     contentAlignment: Alignment = Alignment.TopStart,
 ) {
-    val navTransition = remember { navGraph.transitions }
+    val navTransition = remember { graphNavigation.transitions }
     androidx.navigation.compose.NavHost(
         navController = navController,
-        startDestination = startDestination ?: navGraph.startDestination,
+        startDestination = startDestination ?: graphNavigation.startDestination,
         modifier = modifier,
         contentAlignment = contentAlignment,
-        route = navGraph.route,
+        route = graphNavigation.route,
         enterTransition = { with(navTransition) { enterTransition() } },
         exitTransition = { with(navTransition) { exitTransition() } },
         popEnterTransition = { with(navTransition) { popEnterTransition() } },
         popExitTransition = { with(navTransition) { popExitTransition() } },
         sizeTransform = { with(navTransition) { sizeTransform() } },
     ) {
-        navGraph.nestedNavGraphs.forEach {
-            navGraphNavigation(navGraph = it, navController = navController, isCompact = isCompact)
+        graphNavigation.nestedGraphs.forEach {
+            navGraphNavigation(graphNavigation = it, navController = navController, isCompact = isCompact)
         }
-        navGraph.screenDestinations.forEach {
+        graphNavigation.destinations.forEach {
             screenDestination(
                 screenDestination = it,
                 navController = navController,
@@ -54,25 +54,25 @@ fun NavGraphNavHost(
 }
 
 fun NavGraphBuilder.navGraphNavigation(
-    navGraph: NavGraph,
+    graphNavigation: GraphNavigation,
     navController: NavController,
     isCompact: Boolean,
 ) {
-    val navTransition = navGraph.transitions
+    val navTransition = graphNavigation.transitions
     navigation(
-        startDestination = navGraph.startDestination,
-        route = navGraph.route,
-        typeMap = navGraph.typeMap,
+        startDestination = graphNavigation.startDestination,
+        route = graphNavigation.route,
+        typeMap = graphNavigation.typeMap,
         enterTransition = { with(navTransition) { enterTransition() } },
         exitTransition = { with(navTransition) { exitTransition() } },
         popEnterTransition = { with(navTransition) { popEnterTransition() } },
         popExitTransition = { with(navTransition) { popExitTransition() } },
         sizeTransform = { with(navTransition) { sizeTransform() } },
     ) {
-        navGraph.nestedNavGraphs.forEach {
-            navGraphNavigation(navGraph = it, navController = navController, isCompact = isCompact)
+        graphNavigation.nestedGraphs.forEach {
+            navGraphNavigation(graphNavigation = it, navController = navController, isCompact = isCompact)
         }
-        navGraph.screenDestinations.forEach {
+        graphNavigation.destinations.forEach {
             screenDestination(
                 screenDestination = it,
                 navController = navController,
@@ -131,7 +131,7 @@ private fun NavGraphBuilder.addComposable(
                 it.Content(navController = navController)
             }
         }.apply {
-            screenDestination.deeplinks.forEach {
+            screenDestination.deepLinks.forEach {
                 deepLink(it)
             }
             this.enterTransition = { with(navTransitions) { enterTransition() } }

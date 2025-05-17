@@ -2,7 +2,6 @@ import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-import org.eclipse.jgit.api.Git
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
