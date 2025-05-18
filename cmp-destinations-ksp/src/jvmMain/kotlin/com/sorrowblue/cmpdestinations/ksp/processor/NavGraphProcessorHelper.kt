@@ -8,6 +8,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.Modifier
 import com.google.devtools.ksp.validate
+import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import com.sorrowblue.cmpdestinations.annotation.NavGraph
 import com.sorrowblue.cmpdestinations.ksp.generator.NavGraphGenerator
 import com.sorrowblue.cmpdestinations.ksp.generator.NavGraphInfo
@@ -36,6 +37,7 @@ internal class NavGraphProcessorHelper(
         val (processable, skip) = symbols.partition(KSClassDeclaration::validate)
         processable.forEach { ksClass ->
             val expectGraph = ksClass.modifiers.contains(Modifier.EXPECT)
+            val isInternal = ksClass.modifiers.contains(Modifier.INTERNAL)
             logger.info(
                 "@NavGraph ${ksClass.simpleName.asString()} expectGraph: $expectGraph",
                 ksClass
@@ -66,8 +68,9 @@ internal class NavGraphProcessorHelper(
 
             val nestedGraphs = graphAnnotation.getArgument<List<KSType>>("nestedGraphs").orEmpty()
             logger.info("@NavGraph nestedGraphs = ${nestedGraphs.joinToString(",")}", ksClass)
-            val startDestination = graphAnnotation.getArgument<KSType>("startDestination")!!
-            val transitions = graphAnnotation.getArgument<KSType>("transitions")!!
+            val startDestination = graphAnnotation.getArgument<KSType>(NavGraph::startDestination.name)!!
+            val transitions = graphAnnotation.getArgument<KSType>(NavGraph::transitions.name)?.toClassNameOrNull()
+                ?: NavTransitions.Default::class.asClassName()
 
             val name = ksClass.toClassName().let {
                 ClassName(
@@ -80,11 +83,12 @@ internal class NavGraphProcessorHelper(
                 NavGraphInfo(
                     name = name,
                     isActual = expectGraph,
+                    isInternal = isInternal,
                     startDestination = startDestination.toClassName(),
                     route = ksClass.asType(emptyList()),
                     destinations = destinations,
                     nestedGraphs = nestedGraphs,
-                    transitions = transitions.toClassName()
+                    transitions = transitions
                 )
             )
         }

@@ -9,6 +9,7 @@ import com.sorrowblue.cmpdestinations.ScreenDestination
 import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import com.sorrowblue.cmpdestinations.ksp.isObjectClass
 import com.squareup.kotlinpoet.ARRAY
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
@@ -27,6 +28,7 @@ import kotlinx.serialization.Serializable
 data class NavGraphInfo(
     val name: ClassName,
     val isActual: Boolean,
+    val isInternal: Boolean,
     val startDestination: ClassName,
     val route: KSType,
     val destinations: List<KSType>,
@@ -37,30 +39,22 @@ data class NavGraphInfo(
 class NavGraphGenerator(private val codeGenerator: CodeGenerator) {
 
     fun generate(info: NavGraphInfo) {
-        val route = if (info.isActual) {
-            val routeClassName =
-                info.name.let { ClassName(it.packageName, it.simpleName + "Route") }
-            val route = TypeSpec.objectBuilder(routeClassName)
-                .addAnnotation(Serializable::class)
-                .build()
-
-            FileSpec.builder(info.name.packageName, "${routeClassName.simpleName}.nav")
-                .indent("    ")
-                .addType(route)
-                .build()
-                .writeTo(codeGenerator, Dependencies(true))
-            routeClassName
-        } else {
-            info.route.toClassName()
-        }
-
         val clazz = TypeSpec.objectBuilder(info.name).apply {
             if (info.isActual) {
                 addModifiers(KModifier.ACTUAL)
+                addAnnotation(
+                    AnnotationSpec.builder(Suppress::class)
+                        .addMember("%S", "ACTUAL_ANNOTATIONS_NOT_MATCH_EXPECT")
+                        .build()
+                )
+                addAnnotation(Serializable::class)
+            }
+            if (info.isInternal) {
+                addModifiers(KModifier.INTERNAL)
             }
             addSuperinterface(GraphNavigation::class)
             addStartDestination(info.startDestination, info.isActual)
-            addRoute(route, info.isActual)
+            addRoute(info.route.toClassName(), info.isActual)
             addDestinationsProperty(info.destinations, info.isActual)
             addNestedGraphsProperty(info.nestedGraphs, info.isActual)
             addTransitionsProperty(info.transitions, info.isActual)
@@ -203,7 +197,10 @@ class NavGraphGenerator(private val codeGenerator: CodeGenerator) {
         PropertySpec.builder(
             "typeMap",
             Map::class.asClassName()
-                .parameterizedBy(KType::class.asTypeName(), NavType::class.asClassName().parameterizedBy(STAR)),
+                .parameterizedBy(
+                    KType::class.asTypeName(),
+                    NavType::class.asClassName().parameterizedBy(STAR)
+                ),
             KModifier.OVERRIDE
         ).apply {
             if (isActual) {
