@@ -1,5 +1,6 @@
 package com.sorrowblue.cmpdestinations.ksp.generator
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -9,6 +10,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSTypeReference
 import com.google.devtools.ksp.symbol.Modifier
+import com.sorrowblue.cmpdestinations.Destination
 import com.sorrowblue.cmpdestinations.DestinationScope
 import com.sorrowblue.cmpdestinations.DestinationScopeImpl
 import com.sorrowblue.cmpdestinations.DestinationStyle
@@ -55,9 +57,14 @@ internal class ScreenDestinationGenerator(private val codeGenerator: CodeGenerat
         } else {
             KModifier.PUBLIC
         }
+        val superInterface = if (info.style == DestinationStyle.Dialog::class.asClassName()) {
+            Destination::class
+        } else {
+            ScreenDestination::class
+        }
         val classTypeSpec = TypeSpec.objectBuilder(className)
             .addModifiers(visibility)
-            .addSuperinterface(ScreenDestination::class)
+            .addSuperinterface(superInterface)
             .addProperty(routeProperty(info.route))
             .addProperty(styleProperty(info.style))
             .addProperty(wrappersProperty(info.wrappers))
@@ -240,7 +247,7 @@ internal class ScreenDestinationGenerator(private val codeGenerator: CodeGenerat
     ): FunSpec = FunSpec.builder("Content")
         .addAnnotation(Composable::class)
         .addModifiers(KModifier.OVERRIDE)
-        .receiver(NavBackStackEntry::class)
+        .addParameter(ParameterSpec("backStackEntry", NavBackStackEntry::class.asClassName()))
         .addParameter(ParameterSpec("navController", NavController::class.asClassName()))
         .addCode(
             CodeBlock.builder().apply {
@@ -258,7 +265,7 @@ internal class ScreenDestinationGenerator(private val codeGenerator: CodeGenerat
         .build()
 
     private inline fun CodeBlock.Builder.destinationScopeImpl(content: () -> Unit) {
-        addStatement("val scope = %T(this, navController)", DestinationScopeImpl::class)
+        addStatement("val scope = %T(backStackEntry, navController)", DestinationScopeImpl::class)
         beginControlFlow("with(scope)")
         content()
         endControlFlow()
@@ -302,12 +309,16 @@ internal class ScreenDestinationGenerator(private val codeGenerator: CodeGenerat
                     )
                 }
 
+                AnimatedContentScope::class.qualifiedName -> {
+                    addStatement("%L = this,", it.first)
+                }
+
                 NavBackStackEntry::class.qualifiedName -> {
-                    addStatement("%L = this@Content,", it.first)
+                    addStatement("%L = backStackEntry,", it.first)
                 }
 
                 NavResultReceiver::class.qualifiedName -> {
-                    addStatement("%L=%M(),", it.first, navResultReceiver)
+                    addStatement("%L=backStackEntry.%M(),", it.first, navResultReceiver)
                 }
 
                 NavController::class.qualifiedName -> {
@@ -315,7 +326,7 @@ internal class ScreenDestinationGenerator(private val codeGenerator: CodeGenerat
                 }
 
                 routeType.canonicalName -> {
-                    addStatement("${it.first} = %M<%T>(),", toRoute, routeType)
+                    addStatement("${it.first} = backStackEntry.%M<%T>(),", toRoute, routeType)
                 }
 
                 else -> throw NotSupportException("not support type=$argumentClassName")

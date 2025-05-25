@@ -1,6 +1,7 @@
 package com.sorrowblue.cmpdestinations
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.compose.DialogNavigatorDestinationBuilder
 import androidx.navigation.compose.navigation
 import androidx.navigation.get
+import com.sorrowblue.cmpdestinations.animation.LocalAnimatedContentScope
 import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import kotlin.reflect.KClass
 
@@ -40,7 +42,11 @@ fun NavGraphNavHost(
         sizeTransform = { with(navTransition) { sizeTransform() } },
     ) {
         graphNavigation.nestedGraphs.forEach {
-            navGraphNavigation(graphNavigation = it, navController = navController, isCompact = isCompact)
+            navGraphNavigation(
+                graphNavigation = it,
+                navController = navController,
+                isCompact = isCompact
+            )
         }
         graphNavigation.destinations.forEach {
             screenDestination(
@@ -70,7 +76,11 @@ fun NavGraphBuilder.navGraphNavigation(
         sizeTransform = { with(navTransition) { sizeTransform() } },
     ) {
         graphNavigation.nestedGraphs.forEach {
-            navGraphNavigation(graphNavigation = it, navController = navController, isCompact = isCompact)
+            navGraphNavigation(
+                graphNavigation = it,
+                navController = navController,
+                isCompact = isCompact
+            )
         }
         graphNavigation.destinations.forEach {
             screenDestination(
@@ -127,8 +137,10 @@ private fun NavGraphBuilder.addComposable(
         ) {
             // TODO("たぶんViewModelとかでrouteを取得するときに必要？")
             //  rememberKoinModules { listOf(module { single { screenDestination.typeMap } }) }
-            with(screenDestination) {
-                it.Content(navController = navController)
+            CompositionLocalProvider(LocalAnimatedContentScope provides this) {
+                with(screenDestination) {
+                    Content(navController = navController, backStackEntry = it)
+                }
             }
         }.apply {
             screenDestination.deepLinks.forEach {
@@ -144,7 +156,7 @@ private fun NavGraphBuilder.addComposable(
 }
 
 private fun NavGraphBuilder.addDialog(
-    screenDestination: ScreenDestination,
+    screenDestination: Destination,
     navController: NavController,
 ) {
     destination(
@@ -154,10 +166,8 @@ private fun NavGraphBuilder.addDialog(
             typeMap = screenDestination.typeMap,
             dialogProperties = DialogProperties(),
         ) {
-            // TODO("たぶんViewModelとかでrouteを取得するときに必要？")
-            //  rememberKoinModules { listOf(module { single { screenDestination.typeMap } }) }
             with(screenDestination) {
-                it.Content(navController = navController)
+                Content(backStackEntry = it, navController = navController)
             }
         }
     )
