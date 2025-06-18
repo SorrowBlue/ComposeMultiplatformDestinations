@@ -33,9 +33,7 @@ kotlinx-serializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-s
 ksp-symbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 mavenPublish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "maven-publish" }
 squareup-kotlinpoetKsp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet-ksp" }
-cmpdestinations-core = { group = "com.sorrowblue.cmpdestinations", name = "cmp-destinations-core", version = "0.1.6" }
-cmpdestinations-ksp = { group = "com.sorrowblue.cmpdestinations", name = "cmp-destinations-ksp", version = "0.1.6" }
-material3-adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive", version = "1.1.1" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
