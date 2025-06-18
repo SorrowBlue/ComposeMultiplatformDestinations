@@ -817,6 +817,7 @@ Compose:
     active: true
     # You can optionally add your own composables here
     # contentEmitters: MyComposable,MyOtherComposable
+      - 'LocalAnimatedContentScope'
   DefaultsVisibility:
     active: true
   ModifierClickableOrder:
