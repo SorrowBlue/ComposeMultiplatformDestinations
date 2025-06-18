@@ -94,7 +94,7 @@ fun NavGraphBuilder.navGraphNavigation(
 }
 
 private fun NavGraphBuilder.screenDestination(
-    screenDestination: ScreenDestination,
+    screenDestination: Destination,
     navController: NavController,
     isCompact: Boolean,
     navTransitions: NavTransitions,
@@ -102,7 +102,7 @@ private fun NavGraphBuilder.screenDestination(
     when (screenDestination.style) {
         DestinationStyle.Composable ->
             addComposable(
-                screenDestination = screenDestination,
+                screenDestination = screenDestination as ScreenDestination,
                 navController = navController,
                 navTransitions = navTransitions
             )
@@ -113,7 +113,7 @@ private fun NavGraphBuilder.screenDestination(
         DestinationStyle.Auto -> {
             if (isCompact) {
                 addComposable(
-                    screenDestination = screenDestination,
+                    screenDestination = screenDestination as ScreenDestination,
                     navController = navController,
                     navTransitions = navTransitions
                 )

@@ -4,8 +4,8 @@ import androidx.navigation.NavType
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.symbol.KSType
+import com.sorrowblue.cmpdestinations.Destination
 import com.sorrowblue.cmpdestinations.GraphNavigation
-import com.sorrowblue.cmpdestinations.ScreenDestination
 import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import com.sorrowblue.cmpdestinations.ksp.isObjectClass
 import com.squareup.kotlinpoet.ARRAY
@@ -108,7 +108,7 @@ class NavGraphGenerator(private val codeGenerator: CodeGenerator) {
     ) = addProperty(
         PropertySpec.builder(
             "destinations",
-            ARRAY.parameterizedBy(ScreenDestination::class.asClassName()),
+            ARRAY.parameterizedBy(Destination::class.asClassName()),
             KModifier.OVERRIDE
         ).apply {
             if (isActual) {

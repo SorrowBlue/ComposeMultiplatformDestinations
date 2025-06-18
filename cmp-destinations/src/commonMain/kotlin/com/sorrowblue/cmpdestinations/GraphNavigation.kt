@@ -9,7 +9,7 @@ interface GraphNavigation {
     val startDestination: KClass<*>
     val route: KClass<*>
     val typeMap: Map<KType, NavType<*>>
-    val destinations: Array<ScreenDestination>
+    val destinations: Array<Destination>
     val nestedGraphs: Array<GraphNavigation>
     val transitions: NavTransitions
 }

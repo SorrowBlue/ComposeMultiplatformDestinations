@@ -5,7 +5,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import com.sorrowblue.cmpdestinations.GraphNavigation
-import com.sorrowblue.cmpdestinations.ScreenDestination
 import com.sorrowblue.cmpdestinations.animation.NavTransitions
 import com.sorrowblue.cmpdestinations.annotation.Destination
 import com.sorrowblue.cmpdestinations.annotation.NavGraph
@@ -27,7 +26,7 @@ import kotlinx.serialization.Serializable
 )
 expect object MainGraph : GraphNavigation {
     override val typeMap: Map<KType, NavType<*>>
-    override val destinations: Array<ScreenDestination>
+    override val destinations: Array<com.sorrowblue.cmpdestinations.Destination>
     override val nestedGraphs: Array<GraphNavigation>
     override val route: KClass<*>
     override val startDestination: KClass<*>
