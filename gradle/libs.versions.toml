@@ -23,7 +23,7 @@ androidx-lifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle",
 androidx-lifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigationCompose" }
 androidx-navigationCompose-multiplatform = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigationCompose-multiplatform" }
-detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version = "0.4.22" }
+detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version = "0.4.26" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detekt-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 kotlinx-coroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
