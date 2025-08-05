@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.cmpdestinations.detekt)
     alias(libs.plugins.cmpdestinations.publish)
+    alias(libs.plugins.versions)
 }
 
 kotlin {

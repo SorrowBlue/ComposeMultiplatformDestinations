@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.cmpdestinations.detekt)
+    alias(libs.plugins.versions)
 }
 
 kotlin {

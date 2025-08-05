@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.cmpdestinations.detekt)
     alias(libs.plugins.cmpdestinations.publish)
+    alias(libs.plugins.versions)
 }
 
 kotlin {
