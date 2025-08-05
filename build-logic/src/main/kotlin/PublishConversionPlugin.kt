@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import org.gradle.api.Action
@@ -53,7 +52,7 @@ internal class PublishConversionPlugin : Plugin<Project> {
             }
 
             extensions.configure<MavenPublishBaseExtension> {
-                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+                publishToMavenCentral()
 
                 afterEvaluate {
                     coordinates(
