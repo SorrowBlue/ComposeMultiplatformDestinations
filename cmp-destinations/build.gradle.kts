@@ -58,6 +58,7 @@ kotlin {
 
 android {
     namespace = "com.sorrowblue.cmpdestinations"
+    compileSdk = 36
 
     lint {
         val isCI = System.getenv("CI").toBoolean()
