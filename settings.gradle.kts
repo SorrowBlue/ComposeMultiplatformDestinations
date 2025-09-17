@@ -18,13 +18,14 @@ pluginManagement {
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-    id("com.android.settings") version "8.13.0"
 }
 
-android {
-    compileSdk = 35
-    minSdk = 30
-}
+// Note: The android settings block is commented out due to plugin availability issues
+// Individual modules will configure their own compileSdk
+// android {
+//     compileSdk = 36
+//     minSdk = 30
+// }
 
 dependencyResolutionManagement {
     repositories {
