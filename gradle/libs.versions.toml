@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.0"
-androidx-activityCompose = "1.10.1"
+androidx-activityCompose = "1.11.0"
 androidx-coreBundle = "1.1.0-alpha03"
 androidx-lifecycle = "2.9.4"
 androidx-navigationCompose = "2.9.4"
