@@ -89,7 +89,6 @@ kotlin {
 
 android {
     namespace = "com.sorrowblue.cmpdestinations.app"
-    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.sorrowblue.cmpdestinations"
