@@ -38,4 +38,26 @@ abstract class NavTransitions {
             return null
         }
     }
+
+    object ApplyParent : NavTransitions() {
+        override fun AnimatedContentTransitionScope<NavBackStackEntry>.enterTransition(): EnterTransition {
+            return EnterTransition.None
+        }
+
+        override fun AnimatedContentTransitionScope<NavBackStackEntry>.exitTransition(): ExitTransition {
+            return ExitTransition.None
+        }
+
+        override fun AnimatedContentTransitionScope<NavBackStackEntry>.popEnterTransition(): EnterTransition {
+            return enterTransition()
+        }
+
+        override fun AnimatedContentTransitionScope<NavBackStackEntry>.popExitTransition(): ExitTransition {
+            return exitTransition()
+        }
+
+        override fun AnimatedContentTransitionScope<NavBackStackEntry>.sizeTransform(): SizeTransform? {
+            return null
+        }
+    }
 }

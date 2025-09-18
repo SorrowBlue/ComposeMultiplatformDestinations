@@ -2,7 +2,6 @@ package com.sorrowblue.cmpdestinations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.DialogProperties
@@ -28,7 +27,8 @@ fun NavGraphNavHost(
     isCompact: Boolean = false,
     contentAlignment: Alignment = Alignment.TopStart,
 ) {
-    val navTransition = remember { graphNavigation.transitions }
+    val navTransition =
+        if (graphNavigation.transitions != NavTransitions.ApplyParent) graphNavigation.transitions else NavTransitions.Default
     androidx.navigation.compose.NavHost(
         navController = navController,
         startDestination = startDestination ?: graphNavigation.startDestination,
@@ -45,7 +45,8 @@ fun NavGraphNavHost(
             navGraphNavigation(
                 graphNavigation = it,
                 navController = navController,
-                isCompact = isCompact
+                isCompact = isCompact,
+                parentNavTransitions = navTransition
             )
         }
         graphNavigation.destinations.forEach {
@@ -63,23 +64,26 @@ fun NavGraphBuilder.navGraphNavigation(
     graphNavigation: GraphNavigation,
     navController: NavController,
     isCompact: Boolean,
+    parentNavTransitions: NavTransitions = NavTransitions.Default,
 ) {
-    val navTransition = graphNavigation.transitions
+    val navTransitions =
+        if (graphNavigation.transitions != NavTransitions.ApplyParent) graphNavigation.transitions else parentNavTransitions
     navigation(
         startDestination = graphNavigation.startDestination,
         route = graphNavigation.route,
         typeMap = graphNavigation.typeMap,
-        enterTransition = { with(navTransition) { enterTransition() } },
-        exitTransition = { with(navTransition) { exitTransition() } },
-        popEnterTransition = { with(navTransition) { popEnterTransition() } },
-        popExitTransition = { with(navTransition) { popExitTransition() } },
-        sizeTransform = { with(navTransition) { sizeTransform() } },
+        enterTransition = { with(navTransitions) { enterTransition() } },
+        exitTransition = { with(navTransitions) { exitTransition() } },
+        popEnterTransition = { with(navTransitions) { popEnterTransition() } },
+        popExitTransition = { with(navTransitions) { popExitTransition() } },
+        sizeTransform = { with(navTransitions) { sizeTransform() } },
     ) {
         graphNavigation.nestedGraphs.forEach {
             navGraphNavigation(
                 graphNavigation = it,
                 navController = navController,
-                isCompact = isCompact
+                isCompact = isCompact,
+                parentNavTransitions = navTransitions
             )
         }
         graphNavigation.destinations.forEach {
@@ -87,7 +91,7 @@ fun NavGraphBuilder.navGraphNavigation(
                 screenDestination = it,
                 navController = navController,
                 isCompact = isCompact,
-                navTransitions = navTransition
+                navTransitions = navTransitions
             )
         }
     }
