@@ -57,8 +57,8 @@ internal class NavGraphProcessorHelper(
 
             val (_, graphAnnotation) = ksClass.annotations.getFirst(navGraphCanonicalName)
 
-            val destinations = graphAnnotation.getArgument<List<KSType>>("destinations").orEmpty() +
-                    graphDestination[ksClass.toClassName()].orEmpty()
+            val destinations = graphAnnotation.getArgument<List<KSType>>("destinations")
+                .orEmpty() + graphDestination[ksClass.toClassName()].orEmpty()
             logger.info(
                 "@NavGraph destinations = ${destinations.joinToString(",")}",
                 ksClass
