@@ -55,10 +55,10 @@ internal class NavGraphProcessorHelper(
                 }
             }
 
-            val (graph, graphAnnotation) = ksClass.annotations.getFirst(navGraphCanonicalName)
+            val (_, graphAnnotation) = ksClass.annotations.getFirst(navGraphCanonicalName)
 
             val destinations = graphAnnotation.getArgument<List<KSType>>("destinations").orEmpty() +
-                graphDestination[ksClass.toClassName()].orEmpty()
+                    graphDestination[ksClass.toClassName()].orEmpty()
             logger.info(
                 "@NavGraph destinations = ${destinations.joinToString(",")}",
                 ksClass
@@ -68,9 +68,11 @@ internal class NavGraphProcessorHelper(
 
             val nestedGraphs = graphAnnotation.getArgument<List<KSType>>("nestedGraphs").orEmpty()
             logger.info("@NavGraph nestedGraphs = ${nestedGraphs.joinToString(",")}", ksClass)
-            val startDestination = graphAnnotation.getArgument<KSType>(NavGraph::startDestination.name)!!
-            val transitions = graphAnnotation.getArgument<KSType>(NavGraph::transitions.name)?.toClassNameOrNull()
-                ?: NavTransitions.Default::class.asClassName()
+            val startDestination =
+                graphAnnotation.getArgument<KSType>(NavGraph::startDestination.name)!!
+            val transitions =
+                graphAnnotation.getArgument<KSType>(NavGraph::transitions.name)?.toClassNameOrNull()
+                    ?: NavTransitions.ApplyParent::class.asClassName()
 
             val name = ksClass.toClassName().let {
                 ClassName(
