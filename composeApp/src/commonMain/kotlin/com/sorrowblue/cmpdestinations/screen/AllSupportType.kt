@@ -98,7 +98,7 @@ internal data class AllSupportType(
 fun isCompactWindowClass(): Boolean {
     val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
     return !windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) ||
-            !windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)
+        !windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)
 }
 
 object DestinationStyleAdaptive : DestinationDialogStyle {
