@@ -5,6 +5,7 @@ androidx-coreBundle = "1.1.0-alpha03"
 androidx-lifecycle = "2.9.4"
 androidx-navigationCompose = "2.9.4"
 androidx-navigationCompose-multiplatform = "2.9.0"
+compose-material3-adaptive = "1.2.0-alpha06"
 compose-multiplatform = "1.9.0"
 detekt = "1.23.8"
 java = "21"
@@ -23,6 +24,7 @@ androidx-lifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle",
 androidx-lifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigationCompose" }
 androidx-navigationCompose-multiplatform = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigationCompose-multiplatform" }
+compose-material3-adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive", version.ref = "compose-material3-adaptive" }
 detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version = "0.4.27" }
 detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detekt-plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }

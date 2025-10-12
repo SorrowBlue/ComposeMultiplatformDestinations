@@ -3,12 +3,24 @@ package com.sorrowblue.cmpdestinations.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
+import androidx.window.core.layout.WindowSizeClass
+import com.sorrowblue.cmpdestinations.DestinationDialogStyle
 import com.sorrowblue.cmpdestinations.annotation.Destination
 import com.sorrowblue.cmpdestinations.result.NavResultSender
 import kotlinx.serialization.Serializable
@@ -82,27 +94,72 @@ internal data class AllSupportType(
     }
 }
 
-@Destination<AllSupportType>
+@Composable
+fun isCompactWindowClass(): Boolean {
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    return !windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND) ||
+            !windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)
+}
+
+object DestinationStyleAdaptive : DestinationDialogStyle {
+    override val dialogProperties = DialogProperties(
+        usePlatformDefaultWidth = false,
+        dismissOnClickOutside = false,
+        dismissOnBackPress = false,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Destination<AllSupportType>(style = DestinationStyleAdaptive::class)
 @Composable
 internal fun AllSupportTypeScreen(
     route: AllSupportType,
     sender: NavResultSender<String>,
+    navController: NavController,
 ) {
-    Scaffold {
-        val typeList = remember { route.typeList() }
-        LazyColumn {
-            items(typeList) {
-                ListItem(
-                    overlineContent = {
-                        Text(it.first)
-                    },
-                    headlineContent = {
-                        Text(it.second)
-                    },
-                    modifier = Modifier.clickable {
-                        sender.navigateBack(it.second)
-                    }
-                )
+    var text by rememberSaveable { mutableStateOf("") }
+    if (isCompactWindowClass()) {
+        Scaffold {
+            val typeList = remember { route.typeList() }
+            LazyColumn {
+                item {
+                    TextField(text, { text = it })
+                }
+                items(typeList) {
+                    ListItem(
+                        overlineContent = {
+                            Text(it.first)
+                        },
+                        headlineContent = {
+                            Text(it.second)
+                        },
+                        modifier = Modifier.clickable {
+                            sender.navigateBack(it.second)
+                        }
+                    )
+                }
+            }
+        }
+    } else {
+        BasicAlertDialog(onDismissRequest = navController::navigateUp) {
+            val typeList = remember { route.typeList() }
+            LazyColumn {
+                item {
+                    TextField(text, { text = it })
+                }
+                items(typeList) {
+                    ListItem(
+                        overlineContent = {
+                            Text(it.first)
+                        },
+                        headlineContent = {
+                            Text(it.second)
+                        },
+                        modifier = Modifier.clickable {
+                            sender.navigateBack(it.second)
+                        }
+                    )
+                }
             }
         }
     }

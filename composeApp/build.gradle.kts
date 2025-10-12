@@ -73,6 +73,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.androidx.lifecycleViewmodel)
+                implementation(libs.compose.material3.adaptive)
                 implementation(libs.androidx.lifecycleRuntimeCompose)
                 implementation(libs.androidx.navigationCompose.multiplatform)
                 implementation(libs.kotlinx.serialization)

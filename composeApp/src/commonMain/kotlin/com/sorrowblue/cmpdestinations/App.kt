@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import com.sorrowblue.cmpdestinations.screen.MainGraph
+import com.sorrowblue.cmpdestinations.screen.isCompactWindowClass
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -11,6 +12,7 @@ fun App() {
     MaterialTheme {
         NavGraphNavHost(
             graphNavigation = MainGraph,
+            isCompact = isCompactWindowClass(),
             navController = rememberNavController(),
         )
     }
