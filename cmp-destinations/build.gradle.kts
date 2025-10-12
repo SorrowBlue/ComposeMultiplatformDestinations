@@ -22,6 +22,9 @@ kotlin {
         browser()
         nodejs()
         d8()
+        compilerOptions {
+            freeCompilerArgs.add("-Xwasm-kclass-fqn")
+        }
     }
 
     // Android
