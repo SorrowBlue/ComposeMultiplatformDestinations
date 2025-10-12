@@ -23,7 +23,7 @@ fun NavGraphNavHost(
     graphNavigation: GraphNavigation,
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: KClass<*>? = null,
+    startDestination: KClass<*> = graphNavigation.startDestination,
     isCompact: Boolean = false,
     contentAlignment: Alignment = Alignment.TopStart,
 ) {
@@ -31,7 +31,49 @@ fun NavGraphNavHost(
         if (graphNavigation.transitions != NavTransitions.ApplyParent) graphNavigation.transitions else NavTransitions.Default
     androidx.navigation.compose.NavHost(
         navController = navController,
-        startDestination = startDestination ?: graphNavigation.startDestination,
+        startDestination = startDestination,
+        modifier = modifier,
+        contentAlignment = contentAlignment,
+        route = graphNavigation.route,
+        enterTransition = { with(navTransition) { enterTransition() } },
+        exitTransition = { with(navTransition) { exitTransition() } },
+        popEnterTransition = { with(navTransition) { popEnterTransition() } },
+        popExitTransition = { with(navTransition) { popExitTransition() } },
+        sizeTransform = { with(navTransition) { sizeTransform() } },
+    ) {
+        graphNavigation.nestedGraphs.forEach {
+            navGraphNavigation(
+                graphNavigation = it,
+                navController = navController,
+                isCompact = isCompact,
+                parentNavTransitions = navTransition
+            )
+        }
+        graphNavigation.destinations.forEach {
+            screenDestination(
+                screenDestination = it,
+                navController = navController,
+                isCompact = isCompact,
+                navTransitions = navTransition
+            )
+        }
+    }
+}
+
+@Composable
+fun NavGraphNavHost(
+    graphNavigation: GraphNavigation,
+    navController: NavHostController,
+    startDestination: Any,
+    modifier: Modifier = Modifier,
+    isCompact: Boolean = false,
+    contentAlignment: Alignment = Alignment.TopStart,
+) {
+    val navTransition =
+        if (graphNavigation.transitions != NavTransitions.ApplyParent) graphNavigation.transitions else NavTransitions.Default
+    androidx.navigation.compose.NavHost(
+        navController = navController,
+        startDestination = startDestination,
         modifier = modifier,
         contentAlignment = contentAlignment,
         route = graphNavigation.route,
@@ -103,18 +145,9 @@ private fun NavGraphBuilder.screenDestination(
     isCompact: Boolean,
     navTransitions: NavTransitions,
 ) {
-    when (screenDestination.style) {
-        DestinationStyle.Composable ->
-            addComposable(
-                screenDestination = screenDestination as ScreenDestination,
-                navController = navController,
-                navTransitions = navTransitions
-            )
-
-        DestinationStyle.Dialog ->
-            addDialog(screenDestination = screenDestination, navController = navController)
-
-        DestinationStyle.Auto -> {
+    @Suppress("DEPRECATION")
+    when (val style = screenDestination.style) {
+        is DestinationStyle.Auto -> {
             if (isCompact) {
                 addComposable(
                     screenDestination = screenDestination as ScreenDestination,
@@ -122,9 +155,27 @@ private fun NavGraphBuilder.screenDestination(
                     navTransitions = navTransitions
                 )
             } else {
-                addDialog(screenDestination = screenDestination, navController = navController)
+                addDialog(
+                    screenDestination = screenDestination,
+                    navController = navController,
+                    dialogProperties = style.dialogProperties
+                )
             }
         }
+
+        is DestinationComposableStyle ->
+            addComposable(
+                screenDestination = screenDestination as ScreenDestination,
+                navController = navController,
+                navTransitions = navTransitions
+            )
+
+        is DestinationDialogStyle ->
+            addDialog(
+                screenDestination = screenDestination,
+                navController = navController,
+                dialogProperties = style.dialogProperties
+            )
     }
 }
 
@@ -139,8 +190,6 @@ private fun NavGraphBuilder.addComposable(
             screenDestination.route,
             screenDestination.typeMap,
         ) {
-            // TODO("たぶんViewModelとかでrouteを取得するときに必要？")
-            //  rememberKoinModules { listOf(module { single { screenDestination.typeMap } }) }
             CompositionLocalProvider(LocalAnimatedContentScope provides this) {
                 with(screenDestination) {
                     Content(navController = navController, backStackEntry = it)
@@ -162,13 +211,14 @@ private fun NavGraphBuilder.addComposable(
 private fun NavGraphBuilder.addDialog(
     screenDestination: Destination,
     navController: NavController,
+    dialogProperties: DialogProperties,
 ) {
     destination(
         DialogNavigatorDestinationBuilder(
             navigator = provider[DialogNavigator::class],
             route = screenDestination.route,
             typeMap = screenDestination.typeMap,
-            dialogProperties = DialogProperties(),
+            dialogProperties = dialogProperties,
         ) {
             with(screenDestination) {
                 Content(backStackEntry = it, navController = navController)

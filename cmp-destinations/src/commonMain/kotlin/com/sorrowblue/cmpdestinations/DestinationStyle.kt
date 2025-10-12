@@ -1,10 +1,19 @@
 package com.sorrowblue.cmpdestinations
 
-sealed interface DestinationStyle {
+import androidx.compose.ui.window.DialogProperties
 
-    data object Composable : DestinationStyle
+interface DestinationStyle {
 
-    data object Dialog : DestinationStyle
+    data object Composable : DestinationComposableStyle
 
-    data object Auto : DestinationStyle
+    data object Dialog : DestinationDialogStyle
+
+    @Deprecated(message = "Use DestinationDialogStyle instead")
+    data object Auto : DestinationComposableStyle, DestinationDialogStyle
 }
+
+interface DestinationDialogStyle : DestinationStyle {
+    val dialogProperties: DialogProperties get() = DialogProperties()
+}
+
+interface DestinationComposableStyle : DestinationStyle
