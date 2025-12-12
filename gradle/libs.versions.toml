@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.0"
+agp = "8.13.2"
 androidx-activityCompose = "1.11.0"
 androidx-coreBundle = "1.1.0-alpha03"
 androidx-lifecycle = "2.9.4"
